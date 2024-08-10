@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <img class="card card-img" src="{{ profile.get_image }}" alt="">
+            <div class="d-flex justify-content-between mt-2">
+                {% if request.user == profile.user %}
+                <a  data-bs-toggle="modal" data-bs-target="#Edit_account" class="btn btn-outline-dark">Edit account date</a>
+                <a  data-bs-toggle="modal" data-bs-target="#Edit_profile" class="btn btn-outline-dark">Edit profile date</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-9">
+            <h4>Username: {{ profile.user.username }}</h4>
+            <h4>Name: {{ profile.user.first_name }}</h4>
+            <h4>Second name: {{ profile.user.last_name }}</h4>
+            <h4>Email: {{ profile.user.email }} </h4>
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="Edit_account" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="Edit_accountLabel">Edit accounts data</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+      </div>
+      <div class="modal-body">
+      <form  id="account_submit" action="{% url 'edit_account'  %}"  method="post">
+      {% csrf_token %}
+      <div class="row">
+          <h5>Username: </h5>
+          <input style="border-radius: 5px;" type="text" name="username" value="{{ user.username }}">
+          <h5>First name: </h5>
+          <input style="border-radius: 5px;" type="text" name="first_name" value="{{ user.first_name }}">
+          <h5>Last name: </h5>
+          <input style="border-radius: 5px;" type="text" name="last_name" value="{{ user.last_name }}">
+          <h5>Email adress: </h5>
+          <input style="border-radius: 5px;" type="email" name="email" value="{{ user.email }}">
+
+      </div>
+
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button form="account_submit" type="submit" class="btn btn-success">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="modal fade" id="Edit_profile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="Edit_profileLabel">Edit profiles data</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+      </div>
+      <div class="modal-body">
+      <div class="container">
+
+    <form  id="profiles_submit" action="{% url 'edit_profile' %}"  method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ edit_profile_form.as_p }}
+    </form>
+  </div>
+
+      </div>
+      <div class="modal-footer">
+
+        <button type="submit" form="profiles_submit" class="btn btn-success">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock main %}

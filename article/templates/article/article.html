@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+
+
+{% block main %}
+<div class="container">
+    <div class="row ">
+        <div class="col-12">
+            <h3>Article: {{ article.title }}</h3>
+        </div>
+        <div class="col-3"><img style="width:600;object-fit:cover;"
+                     src="{{ article.get_image }}" height="200px" alt=""></div>
+        <div class="col-9">
+    <h4>Category: {{ article.category }}</h4>
+    <h4>Date: {{ article.date }}</h4>
+    <h4>Author: {{ article.author }}</h4>
+            </div>
+        <div class="col-12">
+            <h4 style="white-space: pre-wrap;">Desctiption: {{ article.text }}</h4>
+            <br>
+            <br>
+        </div>
+
+        <div class="box">
+            {% if user.is_authenticated %}
+            <form method="post" action="{% url 'save_comment' article.pk %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button class="btn btn-success">Submit</button>
+            </form>
+            {% else %}
+            <h5>You should be authenticated to leave a comment!</h5>
+            {% endif %}
+            {% for comment in comments %}
+
+            <div class="row  m-2" style="border: 2px solid #000; border-radius: 10px; padding: 10px;">
+                <div class="col-1">
+            <img class="card card-img " src="{{ comment.profile.get_image }}" alt="">
+
+        </div>
+                <div class="col-5" >
+                    <h5>Username: {{ comment.profile.user.username }}</h5>
+                    <h5>Email: {{ comment.profile.user.email }}</h5>
+                </div>
+                <div class="col-12">{{ comment.comment }}</div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
